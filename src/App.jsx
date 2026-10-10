@@ -867,7 +867,7 @@ export default function App() {
   }
 
   return (
-    <div className={isPlannerPage ? 'app' : 'site-app'}>
+    <div className={`site-app ${isPlannerPage ? 'planner-site-app' : ''}`}>
       <Navbar
         profile={profile}
         pathname={normalizedPath}
@@ -875,8 +875,10 @@ export default function App() {
         onProfileClick={() => setShowProfile(true)}
       />
       {isPlannerPage ? (
-        <div className={`layout ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
-          <aside className={`planner-column ${sidebarCollapsed ? 'is-collapsed' : ''}`}>
+        <>
+          <main className="planner-site-main">
+            <div className={`planner-workspace layout ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+            <aside className={`planner-column ${sidebarCollapsed ? 'is-collapsed' : ''}`}>
             <button
               className="sidebar-toggle"
               type="button"
@@ -918,11 +920,6 @@ export default function App() {
               onClearStops={itineraryControls.clearStops}
               onResetRecommendations={itineraryControls.resetRecommendations}
             />
-            <nav className="planner-footer-links" aria-label="More RoamWise pages">
-              <a href="/about" onClick={(event) => { event.preventDefault(); navigate('/about') }}>About</a>
-              <a href="/feedback" onClick={(event) => { event.preventDefault(); navigate('/feedback') }}>Feedback & Help</a>
-              <span>Local-first · Bengaluru</span>
-            </nav>
             <DiscoveryPanel
               nearby={nearby}
               pinnedIds={pinnedIds}
@@ -938,49 +935,52 @@ export default function App() {
               onHelpful={handleHelpful}
               onSignIn={() => setShowProfile(true)}
             />
-          </aside>
+            </aside>
 
-          <main className="map-column">
-            <div className="map-wrap">
-              <MapView
-                id="walk-map"
-                start={replannedStart || start}
-                dest={dest}
-                shortest={shortest?.coords}
-                explore={explore?.coords}
-                visibleRoute={visibleRoute}
-                nearby={mapPlaces}
-                selectedId={selectedId}
-                selectionVersion={selectionVersion}
-                onSelect={handleSelectPlace}
-              />
-              <RouteCompare
-                shortest={shortest}
-                explore={explore}
-                extraStops={pinnedPlaces.length}
-                visibleRoute={visibleRoute}
-                onChangeRoute={setVisibleRoute}
-              />
-            </div>
-            <div className="map-details">
-              <NavigationPanel
-                stops={pinnedPlaces}
-                destination={dest}
-                itinerary={itinerary}
-                routeSource={routeSource}
-                places={pinnedPlaces}
-                visitedIds={safeWalkProgress.visitedIds}
-                skippedIds={safeWalkProgress.skippedIds}
-                walkActive={safeWalkProgress.active}
-                onSetWalkActive={(active) => setWalkProgress((current) => ({ ...safeWalkProgress, ...current, active }))}
-                onMarkVisited={handleMarkVisited}
-                onSkipStop={handleSkipStop}
-                onReplan={handleReplanFromLocation}
-                onFeedback={handleVisitFeedback}
-              />
+            <section className="map-column" aria-label="Interactive walking map">
+              <div className="map-wrap">
+                <MapView
+                  id="walk-map"
+                  start={replannedStart || start}
+                  dest={dest}
+                  shortest={shortest?.coords}
+                  explore={explore?.coords}
+                  visibleRoute={visibleRoute}
+                  nearby={mapPlaces}
+                  selectedId={selectedId}
+                  selectionVersion={selectionVersion}
+                  onSelect={handleSelectPlace}
+                />
+                <RouteCompare
+                  shortest={shortest}
+                  explore={explore}
+                  extraStops={pinnedPlaces.length}
+                  visibleRoute={visibleRoute}
+                  onChangeRoute={setVisibleRoute}
+                />
+                <div className="map-details">
+                  <NavigationPanel
+                    stops={pinnedPlaces}
+                    destination={dest}
+                    itinerary={itinerary}
+                    routeSource={routeSource}
+                    places={pinnedPlaces}
+                    visitedIds={safeWalkProgress.visitedIds}
+                    skippedIds={safeWalkProgress.skippedIds}
+                    walkActive={safeWalkProgress.active}
+                    onSetWalkActive={(active) => setWalkProgress((current) => ({ ...safeWalkProgress, ...current, active }))}
+                    onMarkVisited={handleMarkVisited}
+                    onSkipStop={handleSkipStop}
+                    onReplan={handleReplanFromLocation}
+                    onFeedback={handleVisitFeedback}
+                  />
+                </div>
+              </div>
+            </section>
             </div>
           </main>
-        </div>
+          <SiteFooter navigate={navigate} />
+        </>
       ) : (
         <>
           {page}

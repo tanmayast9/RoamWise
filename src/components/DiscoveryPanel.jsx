@@ -123,7 +123,7 @@ export default function DiscoveryPanel({
               : 'Plan a walk to surface parks, tiffin rooms, temples, and markets near the footpath.'}
           </p>
         ) : (
-          <div className="cards" aria-label="Nearby places; scroll horizontally to browse">
+          <div className="cards" aria-label="Nearby places; scroll vertically to browse">
             {filteredPlaces.map((place) => {
               const pinned = pinnedIds.includes(place.id)
               const favorite = favoriteIds.includes(place.id)

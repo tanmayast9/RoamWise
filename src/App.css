@@ -1218,49 +1218,25 @@
   }
 }
 
-/* Map-first planner dashboard */
-@media (min-width: 901px) {
-  html,
-  body,
-  #root {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .app {
-    position: fixed;
-    inset: 0;
-    height: auto;
-  }
-
-  html:has(.site-app),
-  body:has(.site-app),
-  #root:has(.site-app) {
-    height: auto;
-    min-height: 100%;
-    overflow: visible;
-  }
+/* Planner workspace shares the public site shell and its navigation. */
+.planner-site-main {
+  width: min(1480px, calc(100% - 48px));
+  flex: 1 0 auto;
+  align-self: center;
+  padding: 28px 0;
 }
 
-.app {
+.planner-workspace {
   display: grid;
-  grid-template-rows: 64px minmax(0, 1fr);
+  grid-template-columns: minmax(340px, 0.78fr) minmax(0, 1.45fr);
   width: 100%;
-  height: 100dvh;
-  min-height: 0;
+  height: min(78dvh, 900px);
+  min-height: 620px;
   overflow: hidden;
-  background: var(--cream);
-}
-
-.nav {
-  z-index: 1000;
-  min-width: 0;
-  padding: 8px 20px;
-  flex-direction: row;
-  align-items: center;
-  background: var(--paper);
-  border-bottom: 1px solid var(--line);
+  border: 1px solid var(--site-line);
+  border-radius: 16px;
+  background: var(--site-cream);
+  box-shadow: 0 10px 32px rgba(24, 40, 29, 0.08);
 }
 
 .brand h1,
@@ -3247,49 +3223,6 @@
   line-height: 1.55;
 }
 
-.app > .nav {
-  gap: 12px;
-}
-
-.app > .nav .nav-main {
-  display: flex;
-  flex: 1 1 auto;
-  align-items: center;
-  gap: clamp(10px, 1.4vw, 20px);
-}
-
-.app > .nav .brand {
-  flex: 0 0 auto;
-  gap: 9px;
-}
-
-.app > .nav .brand h1 {
-  font-size: 1.08rem;
-}
-
-.app > .nav .tagline {
-  max-width: 210px;
-  font-size: 0.68rem;
-}
-
-.app > .nav .site-nav-links {
-  flex: 1 1 auto;
-  justify-content: center;
-  gap: clamp(6px, 0.9vw, 13px);
-}
-
-.app > .nav .site-nav-links a {
-  font-size: 0.68rem;
-}
-
-.app > .nav .site-nav-links a.site-nav-cta {
-  padding: 8px 10px;
-}
-
-.app > .nav .nav-actions {
-  flex: 0 0 auto;
-}
-
 .planner-disclosure {
   flex: 0 0 auto;
   padding: 0;
@@ -3368,11 +3301,12 @@
 .planner-discovery-disclosure > .discovery-section {
   display: flex;
   min-width: 0;
-  min-height: 0;
+  height: min(52dvh, 520px);
+  min-height: 240px;
   flex-direction: column;
   gap: 8px;
   padding: 10px 12px 12px;
-  overflow: visible;
+  overflow: hidden;
   border: 0;
   border-top: 1px solid #e8e9e2;
   border-radius: 0 0 14px 14px;
@@ -3400,30 +3334,29 @@
   font-size: 0.7rem;
 }
 
-.planner-discovery-disclosure .cards {
-  display: flex;
-  flex: 0 0 auto;
-  align-items: stretch;
+.planner-workspace .planner-discovery-disclosure .cards {
+  display: grid;
+  flex: 1 1 auto;
+  align-content: start;
   gap: 8px;
   min-width: 0;
   min-height: 0;
   max-width: 100%;
-  padding: 2px 1px 6px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  overscroll-behavior-inline: contain;
-  scroll-snap-type: x mandatory;
+  padding: 2px 5px 6px 1px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-color: rgba(27, 67, 50, 0.35) transparent;
   scrollbar-width: thin;
 }
 
-.planner-discovery-disclosure .place-card {
+.planner-workspace .planner-discovery-disclosure .place-card {
   display: grid;
-  flex: 0 0 min(285px, 88%);
-  grid-template-rows: auto auto auto minmax(0, 1fr) auto;
-  gap: 3px;
+  grid-template-rows: auto auto auto auto auto;
+  gap: 4px;
   width: auto;
   height: auto;
-  min-height: 150px;
+  min-height: 136px;
   max-height: none;
   padding: 10px;
   overflow: hidden;
@@ -3431,109 +3364,254 @@
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.92);
   box-shadow: 0 3px 12px rgba(24, 40, 29, 0.06);
-  scroll-snap-align: start;
 }
 
-.planner-discovery-disclosure .place-card > p:not(.meta, .culture-note, .fee-note) {
-  display: -webkit-box;
+.planner-workspace .planner-discovery-disclosure .place-card > p:not(.meta, .culture-note, .fee-note) {
+  margin: 0;
+  color: #59655d;
+  font-size: 0.74rem;
+  line-height: 1.45;
+}
+
+.planner-site-main {
+  box-sizing: border-box;
+}
+
+.planner-workspace .planner-column {
+  background: var(--site-cream);
+}
+
+.planner-workspace .map-column {
+  min-width: 0;
+}
+
+.planner-workspace .map-wrap {
+  position: relative;
+  isolation: isolate;
   overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  border-radius: 0 15px 15px 0;
 }
 
-.map-details {
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: 74px;
-  height: 74px;
-  max-height: 74px;
-  bottom: 8px;
+.planner-workspace .map-wrap > .map-details {
+  position: absolute;
+  z-index: 650;
+  right: 16px;
+  bottom: 28px;
+  left: 16px;
+  display: block;
+  width: auto;
+  height: auto;
+  max-height: min(34dvh, 250px);
+  padding: 0;
+  overflow-y: auto;
+  pointer-events: none;
 }
 
-.map-details > .navigation-panel {
-  grid-column: 1 / -1;
-  height: 100%;
-  min-height: 0;
+.planner-workspace .map-wrap > .map-details > .navigation-panel {
+  width: 100%;
+  height: auto;
+  min-height: 74px;
+  max-height: min(34dvh, 250px);
+  overflow: visible;
+  pointer-events: auto;
+}
+
+.planner-workspace .navigation-panel {
+  grid-template-columns: minmax(120px, 0.8fr) minmax(0, 1.5fr) minmax(0, 1.4fr);
+  gap: 10px;
+}
+
+.planner-workspace .navigation-actions,
+.planner-workspace .navigation-metrics {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.planner-workspace .navigation-actions {
+  white-space: normal;
+}
+
+.planner-workspace .planner-discovery-disclosure .place-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.planner-workspace .planner-discovery-disclosure .place-card h4 {
+  margin: 2px 0 0;
+  font-family: Lora, Georgia, serif;
+  font-size: 1rem;
+}
+
+.planner-workspace .planner-discovery-disclosure .place-subtitle {
+  margin: 0;
+}
+
+.planner-workspace .planner-discovery-disclosure .card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+@media (max-width: 1180px) {
+  .planner-site-main {
+    width: min(100% - 32px, 1180px);
+  }
+
+  .planner-workspace {
+    grid-template-columns: minmax(310px, 0.8fr) minmax(0, 1.2fr);
+  }
+
+  .planner-workspace .navigation-panel {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .planner-workspace .navigation-actions {
+    grid-column: 1;
+  }
+
+  .planner-workspace .navigation-metrics {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    justify-content: flex-end;
+  }
 }
 
 @media (max-width: 900px) {
-  .app > .nav {
-    position: sticky;
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: wrap;
+  .planner-site-main {
+    width: min(100% - 28px, 760px);
+    padding: 18px 0 28px;
   }
 
-  .app > .nav .nav-main {
-    flex: 1 1 auto;
-    justify-content: space-between;
+  .planner-workspace {
+    display: flex;
+    height: auto;
+    min-height: 0;
+    flex-direction: column;
+    overflow: visible;
   }
 
-  .app > .nav .mobile-nav-toggle {
-    display: inline-flex;
-    min-width: 72px;
-    min-height: 40px;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    border: 1px solid var(--line);
-    border-radius: 9px;
-    background: var(--paper);
-    color: var(--teal-deep);
-    font-size: 0.75rem;
-    font-weight: 750;
-  }
-
-  .app > .nav .site-nav-links {
-    position: absolute;
-    z-index: 1001;
-    top: 100%;
-    right: 0;
-    left: 0;
-    display: none;
-    align-items: stretch;
-    padding: 10px 18px 16px;
-    border-bottom: 1px solid var(--line);
-    background: var(--paper);
-    box-shadow: 0 12px 20px rgba(20, 40, 28, 0.1);
-  }
-
-  .app > .nav .site-nav-links.is-open {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .app > .nav .site-nav-links a {
-    min-height: 40px;
-    align-content: center;
-    padding: 10px;
-    border-radius: 7px;
-    font-size: 0.8rem;
-    white-space: normal;
-  }
-
-  .app > .nav .site-nav-links a.is-active {
-    background: #eff3ec;
-  }
-
-  .map-details {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto;
+  .planner-workspace .planner-column {
+    order: 1;
+    width: 100%;
     height: auto;
     max-height: none;
+    overflow: visible;
+    border: 0;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .planner-workspace .map-column {
+    order: 2;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .planner-workspace .map-wrap {
+    height: min(62dvh, 580px);
+    min-height: 360px;
+    border-radius: 0 0 15px 15px;
+  }
+
+  .planner-workspace .map-wrap > .map-details {
+    right: 12px;
+    bottom: 26px;
+    left: 12px;
+  }
+
+  .planner-workspace .navigation-panel {
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-height: 74px;
+  }
+
+  .planner-workspace .planner-discovery-disclosure > .discovery-section {
+    height: min(50dvh, 480px);
   }
 }
 
-@media (max-width: 640px) {
-  .app > .nav .nav-main {
-    flex: 1 1 100%;
+@media (max-width: 620px) {
+  .planner-site-main {
+    width: calc(100% - 20px);
+    padding: 10px 0 20px;
   }
 
-  .app > .nav .nav-actions {
-    width: 100%;
+  .planner-workspace .planner-column {
+    padding: 10px;
+  }
+
+  .planner-workspace .map-wrap {
+    height: 56dvh;
+    min-height: 340px;
+    max-height: 520px;
+  }
+
+  .planner-workspace .map-wrap > .map-details {
+    right: 8px;
+    bottom: 24px;
+    left: 8px;
+    max-height: min(38dvh, 240px);
+  }
+
+  .planner-workspace .map-wrap > .map-details > .navigation-panel {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 7px;
+    max-height: min(38dvh, 240px);
+    padding: 9px;
+  }
+
+  .planner-workspace .navigation-heading {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .planner-workspace .navigation-heading h3 {
+    font-size: 0.88rem;
+    white-space: normal;
+  }
+
+  .planner-workspace .navigation-actions {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    gap: 5px;
+  }
+
+  .planner-workspace .navigation-actions .navigation-link,
+  .planner-workspace .navigation-actions .navigation-track,
+  .planner-workspace .navigation-walk {
+    min-height: 32px;
+    padding: 6px 8px;
+    font-size: 0.66rem;
+  }
+
+  .planner-workspace .navigation-metrics {
+    grid-column: 2;
+    grid-row: 1;
     justify-content: flex-end;
   }
 
-  .app > .nav .nav-chip {
+  .planner-workspace .navigation-metrics span {
+    min-height: 24px;
+    padding: 4px 7px;
+    font-size: 0.6rem;
+  }
+
+  .planner-workspace .planner-discovery-disclosure > .discovery-section {
+    height: min(48dvh, 420px);
+    min-height: 220px;
+    padding: 9px;
+  }
+
+  .planner-workspace .planner-discovery-disclosure .place-card {
+    min-height: 128px;
+  }
+}
+
+@media (max-width: 400px) {
+  .planner-workspace .navigation-metrics span:last-child {
     display: none;
   }
 }
