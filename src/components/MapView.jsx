@@ -15,7 +15,7 @@ function pinIcon(className) {
   })
 }
 
-function categoryIcon(category, selected) {
+function categoryIcon(category, selected, number) {
   const colors = {
     food: '#e07a3d',
     heritage: '#8b4b2a',
@@ -24,13 +24,13 @@ function categoryIcon(category, selected) {
     architecture: '#0f5c5b',
     market: '#c45f24',
   }
-  const color = colors[category] || '#0f5c5b'
-  const size = selected ? 32 : 26
+  const color = colors[category] || '#1b4332'
+  const size = 34
   return L.divIcon({
     className: '',
-    html: `<div class="marker" style="width:${size}px;height:${size}px;background:${color}"></div>`,
+    html: `<div class="marker ${selected ? 'marker-selected' : ''}" style="--marker-color:${color}"><span>${number}</span></div>`,
     iconSize: [size, size],
-    iconAnchor: [size / 2, size],
+    iconAnchor: [size / 2, size / 2],
     popupAnchor: [0, -size],
   })
 }
@@ -145,11 +145,11 @@ export default function MapView({
           </Marker>
         ) : null}
 
-        {nearby.map((place) => (
+        {nearby.map((place, index) => (
           <Marker
             key={place.id}
             position={[place.lat, place.lng]}
-            icon={categoryIcon(place.category, place.id === selectedId)}
+            icon={categoryIcon(place.category, place.id === selectedId, index + 1)}
             ref={(marker) => {
               if (marker) markerRefs.current.set(place.id, marker)
               else markerRefs.current.delete(place.id)

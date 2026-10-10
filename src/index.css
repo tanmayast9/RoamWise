@@ -1,18 +1,18 @@
 :root {
-  --cream: #f4ead9;
-  --cream-deep: #eadcc4;
-  --paper: #fffaf1;
-  --ink: #1c2a2a;
-  --muted: #5c6a68;
-  --teal: #0f5c5b;
-  --teal-deep: #0a4544;
-  --teal-soft: #d7ece8;
-  --orange: #e07a3d;
-  --orange-deep: #c45f24;
+  --cream: #faf7f2;
+  --cream-deep: #eee8dd;
+  --paper: #fffefa;
+  --ink: #25332d;
+  --muted: #66716b;
+  --teal: #1b4332;
+  --teal-deep: #163a2c;
+  --teal-soft: #e5eee7;
+  --orange: #d99a38;
+  --orange-deep: #a86c14;
   --line: rgba(28, 42, 42, 0.1);
   --shadow: 0 16px 40px rgba(28, 42, 42, 0.1);
   --radius: 22px;
-  font-family: Nunito, "Segoe UI", sans-serif;
+  font-family: Inter, "Segoe UI", sans-serif;
   color: var(--ink);
   background: var(--cream);
   font-synthesis: none;
@@ -32,10 +32,7 @@ body,
 }
 
 body {
-  background:
-    radial-gradient(1200px 500px at 10% -10%, rgba(224, 122, 61, 0.12), transparent 50%),
-    radial-gradient(900px 400px at 100% 0%, rgba(15, 92, 91, 0.12), transparent 45%),
-    var(--cream);
+  background: var(--cream);
 }
 
 button,
@@ -51,7 +48,7 @@ button {
 h1,
 h2,
 h3 {
-  font-family: Fraunces, Georgia, serif;
+  font-family: Lora, Georgia, serif;
   margin: 0;
 }
 

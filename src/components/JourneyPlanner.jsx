@@ -1,5 +1,14 @@
 import { INTERESTS } from '../lib/discover'
 
+const INTEREST_ICONS = {
+  food: '🍴',
+  heritage: '🏛',
+  park: '🌿',
+  culture: '🎭',
+  architecture: '⌂',
+  market: '🧺',
+}
+
 export default function JourneyPlanner({
   landmarks,
   startId,
@@ -91,13 +100,21 @@ export default function JourneyPlanner({
             className={`chip ${interests.includes(item.id) ? 'active' : ''}`}
             onClick={() => onToggleInterest(item.id)}
           >
+            <span className="chip-icon" aria-hidden="true">{INTEREST_ICONS[item.id]}</span>
             {item.label}
           </button>
         ))}
       </div>
 
-      <button className="plan-btn" type="button" onClick={onPlan} disabled={loading}>
-        {loading ? 'Charting footpaths…' : 'Plan this walk'}
+      <button
+        className="plan-btn"
+        type="button"
+        onClick={onPlan}
+        disabled={loading}
+        aria-busy={loading}
+      >
+        {loading ? <span className="loading-spinner" aria-hidden="true" /> : null}
+        {loading ? 'Charting your walk…' : 'Plan this walk'}
       </button>
       {error ? <p className="error">{error}</p> : null}
       <p className="hint">

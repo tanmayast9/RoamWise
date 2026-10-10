@@ -14,10 +14,12 @@ export default function ItineraryPanel({ itinerary, cultureLine, source }) {
           </p>
           <ol className="timeline">
             {itinerary.items.map((item) => (
-              <li key={item.id}>
+              <li key={item.id} className={`timeline-item timeline-${item.type}`}>
                 <div className="when">{item.time}</div>
                 <div className="dotcol">
-                  <div className={`dot ${item.type === 'walk' ? 'walk' : ''}`} />
+                  <div className={`dot ${item.type === 'walk' ? 'walk' : ''} ${item.place?.category || ''}`}>
+                    {item.type === 'stop' ? item.place?.category === 'food' ? '·' : '•' : null}
+                  </div>
                 </div>
                 <div>
                   <strong>{item.title}</strong>

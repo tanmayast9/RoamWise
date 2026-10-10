@@ -22,6 +22,9 @@ the way, compare the shortest route with a more exploratory walk, and review you
   open Google Maps to read Google reviews.
 - **Responsive layout:** Planner, itinerary, map, navigation, discoveries, and area guide adapt to
   smaller screens.
+- **Map-first dashboard:** A collapsible planner and itinerary sidebar sits beside a full-height
+  desktop map. Numbered category markers, floating route controls, and a swipeable nearby-place
+  carousel keep the map and its discoveries together.
 
 ## Run locally
 

@@ -25,7 +25,7 @@ export default function DiscoveryPanel({
           Plan a walk to surface parks, tiffin rooms, temples, and markets near the footpath.
         </p>
       ) : (
-        <div className="cards">
+        <div className="cards" aria-label="Nearby places; scroll horizontally to browse">
           {nearby.map((place) => {
             const pinned = pinnedIds.includes(place.id)
             return (

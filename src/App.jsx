@@ -44,6 +44,7 @@ export default function App() {
   const [reviews, setReviews] = useLocalStorage('roamwise-reviews', {})
   const [helpfulReviews, setHelpfulReviews] = useLocalStorage('roamwise-helpful-reviews', [])
   const [showProfile, setShowProfile] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const didLoad = useRef(false)
 
   const start = findLandmark(startId)
@@ -206,9 +207,23 @@ export default function App() {
 
   return (
     <div className="app">
-      <Navbar profile={profile} onProfileClick={() => setShowProfile(true)} />
-      <div className="layout">
-        <aside className="planner-column">
+      <Navbar
+        profile={profile}
+        onProfileClick={() => setShowProfile(true)}
+      />
+      <div className={`layout ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+        <aside className={`planner-column ${sidebarCollapsed ? 'is-collapsed' : ''}`}>
+          <button
+            className="sidebar-toggle"
+            type="button"
+            aria-expanded={!sidebarCollapsed}
+            onClick={() => setSidebarCollapsed((collapsed) => !collapsed)}
+          >
+            <span aria-hidden="true">{sidebarCollapsed ? '›' : '‹'}</span>
+            <span className="sidebar-toggle-label">
+              {sidebarCollapsed ? 'Show planner' : 'Collapse panel'}
+            </span>
+          </button>
           <JourneyPlanner
             landmarks={landmarks}
             startId={startId}
@@ -232,6 +247,10 @@ export default function App() {
             cultureLine={summarizeCulture(startTime, pinnedPlaces)}
             source={routeSource}
           />
+          <details className="sidebar-explorer">
+            <summary>Explore all curated places</summary>
+            <AreaExplorer places={places} onSelectPlace={handleSelectPlace} />
+          </details>
         </aside>
 
         <main className="map-column">
@@ -277,7 +296,6 @@ export default function App() {
               onSignIn={() => setShowProfile(true)}
             />
           </div>
-          <AreaExplorer places={places} onSelectPlace={handleSelectPlace} />
         </main>
       </div>
     </div>
