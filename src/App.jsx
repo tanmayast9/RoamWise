@@ -232,7 +232,6 @@ export default function App() {
             cultureLine={summarizeCulture(startTime, pinnedPlaces)}
             source={routeSource}
           />
-          <TripSummary places={pinnedPlaces} />
         </aside>
 
         <main className="map-column">
@@ -263,6 +262,7 @@ export default function App() {
               destination={dest}
               onFeedback={handleVisitFeedback}
             />
+            <TripSummary places={pinnedPlaces} />
             <DiscoveryPanel
               nearby={nearby}
               pinnedIds={pinnedIds}
