@@ -1,0 +1,114 @@
+[
+  {
+    "id": "cubbon",
+    "name": "Cubbon Park",
+    "neighborhood": "Central Bengaluru",
+    "lat": 12.9763,
+    "lng": 77.5929
+  },
+  {
+    "id": "mg-road",
+    "name": "MG Road",
+    "neighborhood": "Central Business District",
+    "lat": 12.9756,
+    "lng": 77.6066
+  },
+  {
+    "id": "church-street",
+    "name": "Church Street",
+    "neighborhood": "Shivajinagar",
+    "lat": 12.9742,
+    "lng": 77.6076
+  },
+  {
+    "id": "brigade",
+    "name": "Brigade Road",
+    "neighborhood": "Ashok Nagar",
+    "lat": 12.9716,
+    "lng": 77.6066
+  },
+  {
+    "id": "lalbagh",
+    "name": "Lalbagh Botanical Garden",
+    "neighborhood": "Lalbagh",
+    "lat": 12.9507,
+    "lng": 77.5848
+  },
+  {
+    "id": "palace",
+    "name": "Bangalore Palace",
+    "neighborhood": "Vasanth Nagar",
+    "lat": 12.9988,
+    "lng": 77.5921
+  },
+  {
+    "id": "vidhana",
+    "name": "Vidhana Soudha",
+    "neighborhood": "Ambedkar Veedhi",
+    "lat": 12.9797,
+    "lng": 77.5906
+  },
+  {
+    "id": "commercial",
+    "name": "Commercial Street",
+    "neighborhood": "Shivajinagar",
+    "lat": 12.9822,
+    "lng": 77.6083
+  },
+  {
+    "id": "ub-city",
+    "name": "UB City",
+    "neighborhood": "Vittal Mallya Road",
+    "lat": 12.9718,
+    "lng": 77.5963
+  },
+  {
+    "id": "kr-market",
+    "name": "KR Market",
+    "neighborhood": "Kalasipalya",
+    "lat": 12.9611,
+    "lng": 77.5756
+  },
+  {
+    "id": "ulsoor",
+    "name": "Ulsoor Lake",
+    "neighborhood": "Halasuru",
+    "lat": 12.9817,
+    "lng": 77.6191
+  },
+  {
+    "id": "indiranagar",
+    "name": "Indiranagar 100 Feet Road",
+    "neighborhood": "Indiranagar",
+    "lat": 12.9784,
+    "lng": 77.6408
+  },
+  {
+    "id": "malleswaram",
+    "name": "Malleswaram 8th Cross",
+    "neighborhood": "Malleswaram",
+    "lat": 13.0006,
+    "lng": 77.5709
+  },
+  {
+    "id": "basavanagudi",
+    "name": "Gandhi Bazaar",
+    "neighborhood": "Basavanagudi",
+    "lat": 12.9435,
+    "lng": 77.5689
+  },
+  {
+    "id": "lavelle",
+    "name": "Lavelle Road",
+    "neighborhood": "Ashok Nagar",
+    "lat": 12.9698,
+    "lng": 77.5978
+  },
+  {
+    "id": "richmond",
+    "name": "Richmond Circle",
+    "neighborhood": "Richmond Town",
+    "lat": 12.9652,
+    "lng": 77.5998
+  }
+]

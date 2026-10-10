@@ -1,6 +1,27 @@
 # RoamWise
 
-RoamWise is a Bengaluru walking companion. Plan a route, discover curated places along it, compare an explore walk with the shortest walk, and browse all areas represented in the local place guide.
+RoamWise is a walking companion for exploring Bengaluru. Plan a route, find curated places along
+the way, compare the shortest route with a more exploratory walk, and review your planned stops.
+
+## Features
+
+- **Journey planner:** Choose start and destination landmarks, start time, walking pace, time
+  budget, and interests.
+- **Walking routes:** Compare the shortest walking route with an explore route that includes
+  selected stops. Routes use OSRM when available and fall back to a distance estimate.
+- **Nearby discoveries:** Browse curated food, heritage, parks, architecture, culture, and market
+  places along a route. Select a place to focus its map marker or add/remove it from the itinerary.
+- **Bengaluru area guide:** Search and filter the curated place list by area, view entry-fee notes,
+  and open locations in Google Maps.
+- **Trip summary:** See the selected-stop count, food-stop count, food recommendations, and any
+  ticketed stops whose fees should be confirmed with the venue.
+- **Walking navigation:** Open walking directions in Google Maps. With browser location
+  permission, RoamWise can track progress, detect arrival near planned stops, and prompt for
+  feedback. Stops can also be marked visited manually.
+- **Reviews and sharing:** Add local ratings and reviews, mark reviews helpful, share places, and
+  open Google Maps to read Google reviews.
+- **Responsive layout:** Planner, itinerary, map, navigation, discoveries, and area guide adapt to
+  smaller screens.
 
 ## Run locally
 
@@ -9,15 +30,20 @@ npm install
 npm run dev
 ```
 
-Use `npm run build` to create a production build and `npm run lint` to run Oxlint.
+Create a production build with `npm run build` and run Oxlint with `npm run lint`.
 
-## Current data and account limits
+## Data and integrations
 
-- The place guide is a hand-curated sample, not a complete directory of every Bengaluru neighbourhood. Area browsing only includes areas represented in `src/data/places.json`.
-- Entry-fee notes identify venues that are ticketed, but rates can change; confirm current prices with the venue.
-- Profiles, reviews, and helpful votes are stored in the current browser only. There is no server authentication, account sync, or shared social feed.
-- Google reviews open on Google Maps; displaying Google review content inside RoamWise requires a configured Google Places API integration and credentials.
-- Walking navigation opens Google Maps directions. With browser location permission, RoamWise can track arrival at planned stops and collect post-visit feedback.
-- Live crowd levels, safety predictions, and shade detection are not provided because no live data source is connected.
-- Place links open a Google Maps search for the recommended location.
-# RoamWise
+- Places are hand-curated in [`src/data/places.json`](./src/data/places.json). The guide currently
+  covers a limited set of Bengaluru areas; it is not a complete city directory.
+- Entry-fee notes indicate when a venue may be ticketed, but current ticket prices are not
+  available in the data. Confirm rates and opening details with the venue.
+- Google reviews open in Google Maps. Displaying Google review content inside RoamWise requires a
+  Google Places API integration, credentials, and compliance with Google's terms.
+- Profiles, RoamWise reviews, helpful votes, and feedback are stored in the current browser only.
+  There is no server authentication, shared review feed, or cross-device account sync.
+- Location tracking requires browser permission and an appropriate secure context. Google Maps is
+  responsible for turn-by-turn navigation; RoamWise does not provide spoken or background
+  turn-by-turn guidance.
+- Live crowd levels, safety predictions, and shade detection are not available because no data
+  sources for those features are connected.
