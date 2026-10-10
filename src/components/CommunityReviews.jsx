@@ -39,7 +39,9 @@ export default function CommunityReviews({
 }) {
   const [rating, setRating] = useState(5)
   const [comment, setComment] = useState('')
-  const placeReviews = reviews[place.id] || []
+  const [visitTag, setVisitTag] = useState('worth-visiting')
+  const [durationAccurate, setDurationAccurate] = useState('')
+  const placeReviews = Array.isArray(reviews?.[place.id]) ? reviews[place.id] : []
   const average = placeReviews.length
     ? (placeReviews.reduce((total, review) => total + review.rating, 0) / placeReviews.length).toFixed(1)
     : null
@@ -55,9 +57,13 @@ export default function CommunityReviews({
       author: profile.displayName,
       helpful: 0,
       createdAt: new Date().toISOString(),
+      visitTag,
+      durationAccurate: durationAccurate === '' ? null : durationAccurate === 'yes',
     })
     setComment('')
     setRating(5)
+    setVisitTag('worth-visiting')
+    setDurationAccurate('')
   }
 
   return (
@@ -76,11 +82,16 @@ export default function CommunityReviews({
                 <strong>{review.author}</strong>
                 <span aria-label={`${review.rating} out of 5 stars`}>{'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}</span>
               </div>
+              {review.visitTag ? <span className="review-tag">{review.visitTag.replaceAll('-', ' ')}</span> : null}
               <p>{review.comment}</p>
+              {typeof review.durationAccurate === 'boolean' ? (
+                <p className="meta">Visit-time estimate {review.durationAccurate ? 'was accurate' : 'was not accurate'}.</p>
+              ) : null}
               <button
                 type="button"
                 className={`text-button ${helpful ? 'helpful-on' : ''}`}
                 onClick={() => onHelpful(review.id)}
+                disabled={helpful}
                 aria-pressed={helpful}
               >
                 Helpful · {review.helpful + (helpful ? 1 : 0)}
@@ -100,6 +111,22 @@ export default function CommunityReviews({
             {[5, 4, 3, 2, 1].map((score) => (
               <option key={score} value={score}>{score} {score === 1 ? 'star' : 'stars'}</option>
             ))}
+          </select>
+          <label htmlFor={`tag-${place.id}`}>Visit feedback</label>
+          <select id={`tag-${place.id}`} value={visitTag} onChange={(event) => setVisitTag(event.target.value)}>
+            <option value="worth-visiting">Worth visiting</option>
+            <option value="good-for-families">Good for families</option>
+            <option value="needs-more-info">Needs more information</option>
+          </select>
+          <label htmlFor={`duration-${place.id}`}>Was the estimated visit time accurate?</label>
+          <select
+            id={`duration-${place.id}`}
+            value={durationAccurate}
+            onChange={(event) => setDurationAccurate(event.target.value)}
+          >
+            <option value="">Skip</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
           </select>
           <label htmlFor={`review-${place.id}`}>Add a review</label>
           <textarea

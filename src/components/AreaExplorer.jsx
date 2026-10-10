@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { categoryLabel } from '../lib/discover'
 import { entryFee, googleMapsUrl } from '../lib/placeInfo'
 
-export default function AreaExplorer({ places }) {
+export default function AreaExplorer({ places, onSelectPlace }) {
   const [area, setArea] = useState('all')
   const [search, setSearch] = useState('')
 

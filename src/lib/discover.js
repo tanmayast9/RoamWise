@@ -1,4 +1,4 @@
-import { haversineMeters, minDistanceToPolyline, routeProgress, timeOfDayBucket } from './geo'
+import { haversineMeters, minDistanceToPolyline, routeProgress, timeOfDayBucket } from './geo.js'
 
 const CATEGORY_LABELS = {
   food: 'Food',
@@ -18,6 +18,52 @@ export const INTERESTS = [
   { id: 'market', label: 'Markets' },
 ]
 
+export const FOOD_FILTERS = [
+  {
+    id: 'vegetarian',
+    label: 'Vegetarian options',
+    available: (places) => places.some((place) => place.category === 'food' && 'vegetarian' in place),
+    matches: (place) => place.vegetarian === true,
+  },
+  {
+    id: 'karnataka',
+    label: 'Karnataka specialties',
+    available: (places) => places.some((place) => place.category === 'food' && 'karnatakaSpecialty' in place),
+    matches: (place) => place.karnatakaSpecialty === true,
+  },
+  {
+    id: 'budget',
+    label: 'Budget-friendly',
+    available: (places) => places.some((place) => place.category === 'food' && 'budgetFriendly' in place),
+    matches: (place) => place.budgetFriendly === true,
+  },
+  {
+    id: 'cafe',
+    label: 'Cafés',
+    available: (places) => places.some((place) => place.category === 'food' && 'foodType' in place),
+    matches: (place) => place.foodType === 'cafe',
+  },
+  {
+    id: 'quick',
+    label: 'Quick stops',
+    available: (places) => places.some((place) => place.category === 'food' && Number.isFinite(place.visitMinutes)),
+    matches: (place) => place.visitMinutes <= 20,
+  },
+  {
+    id: 'restaurant',
+    label: 'Restaurants and eateries',
+    available: (places) => places.some((place) => place.category === 'food' && 'foodType' in place),
+    matches: (place) => place.foodType === 'restaurant',
+  },
+]
+
+export function filterFoodPlaces(places, filterId) {
+  if (!filterId) return places.filter((place) => place.category === 'food')
+  const filter = FOOD_FILTERS.find((item) => item.id === filterId)
+  if (!filter) return []
+  return places.filter((place) => place.category === 'food' && filter.matches(place))
+}
+
 export function categoryLabel(id) {
   return CATEGORY_LABELS[id] || id
 }
@@ -32,10 +78,10 @@ function scorePlace(place, interests, startTime) {
   return score
 }
 
-function estimateDetourMinutes(place, start, dest, routeCoords, paceKmh) {
+function estimateDetourMinutes(place, routeCoords, paceKmh) {
   const along = minDistanceToPolyline(place, routeCoords)
-  const extraMeters = along * 2.1
-  return (extraMeters / 1000 / paceKmh) * 60
+  const extraMeters = along * 2
+  return { extraMeters, minutes: (extraMeters / 1000 / paceKmh) * 60 }
 }
 
 export function discoverAlongRoute({
@@ -96,24 +142,50 @@ export function discoverAlongRoute({
     return a.distanceFromRoute - b.distanceFromRoute
   })
 
-  const spare = Math.max(0, budgetMinutes - walkMinutes)
-  let remaining = spare * 0.92
+  const availableForStops = Math.max(0, budgetMinutes - walkMinutes)
+  let remaining = availableForStops
   const picked = []
 
-  for (const place of ranked) {
+  const feasible = ranked
+    .map((place) => {
+      const detour = estimateDetourMinutes(place, routeCoords, paceKmh)
+      const duration = Number(place.visitMinutes) || 20
+      const cost = duration + detour.minutes
+      return {
+        ...place,
+        estimatedDetourMeters: detour.extraMeters,
+        estimatedDetourMinutes: detour.minutes,
+        estimatedTotalMinutes: cost,
+        valuePerMinute: place.score / Math.max(1, cost),
+      }
+    })
+    .sort((a, b) => b.valuePerMinute - a.valuePerMinute || a.distanceFromRoute - b.distanceFromRoute)
+
+  for (const place of feasible) {
     if (picked.length >= 5) break
-    const detour = estimateDetourMinutes(place, start, dest, routeCoords, paceKmh)
-    const cost = place.visitMinutes + detour
-    if (cost <= remaining + 8) {
-      picked.push(place)
-      remaining -= cost
+    if (place.estimatedTotalMinutes <= remaining) {
+      const reasons = []
+      if (!interests.length || interests.includes(place.category)) reasons.push('matches your interests')
+      if (place.bestTime === 'any' || place.bestTime === timeOfDayBucket(startTime)) {
+        reasons.push('fits your walk time')
+      }
+      if (place.distanceFromRoute < 180) reasons.push('close to the route')
+      picked.push({
+        ...place,
+        recommendationReason: reasons.length ? reasons.join(' · ') : 'good experience for the time',
+      })
+      remaining -= place.estimatedTotalMinutes
     }
   }
 
   picked.sort((a, b) => a.progress - b.progress)
+  const reasonById = new Map(picked.map((place) => [place.id, place.recommendationReason]))
 
   return {
-    nearby: ranked.slice(0, 12),
+    nearby: ranked.slice(0, 12).map((place) => ({
+      ...place,
+      recommendationReason: reasonById.get(place.id) || '',
+    })),
     suggested: picked,
   }
 }

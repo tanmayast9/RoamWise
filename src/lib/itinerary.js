@@ -1,4 +1,4 @@
-import { minutesToTime, parseTimeToMinutes } from './geo'
+import { minutesToTime, parseTimeToMinutes } from './geo.js'
 
 export function buildItinerary({
   start,
@@ -6,8 +6,13 @@ export function buildItinerary({
   startTime,
   stops,
   legs,
+  budgetMinutes,
 }) {
   let cursor = parseTimeToMinutes(startTime)
+  let walkingMinutes = 0
+  let visitMinutes = 0
+  let totalDistance = 0
+  const budget = Number.isFinite(budgetMinutes) ? budgetMinutes : null
   const items = [
     {
       id: 'depart',
@@ -23,6 +28,8 @@ export function buildItinerary({
   for (let i = 0; i < points.length - 1; i += 1) {
     const leg = legs?.[i]
     const walkMin = Math.max(1, Math.round((leg?.duration || 0) / 60) || 8)
+    walkingMinutes += walkMin
+    totalDistance += Number(leg?.distance) || 0
     cursor += walkMin
     items.push({
       id: `walk-${i}`,
@@ -31,6 +38,8 @@ export function buildItinerary({
       subtitle: `${walkMin} min on foot`,
       time: minutesToTime(cursor),
       minutes: walkMin,
+      distance: Number(leg?.distance) || 0,
+      remainingBudgetMinutes: budget === null ? null : budget - (cursor - parseTimeToMinutes(startTime)),
     })
 
     const next = points[i + 1]
@@ -47,8 +56,13 @@ export function buildItinerary({
         minutes: dwell,
         foodTip: next.foodTip,
         cultureNote: next.cultureNote,
+        remainingBudgetMinutes:
+          budget === null
+            ? null
+            : budget - (cursor + dwell - parseTimeToMinutes(startTime)),
       })
       cursor += dwell
+      visitMinutes += dwell
     }
   }
 
@@ -58,6 +72,7 @@ export function buildItinerary({
     title: `Arrive at ${dest.name}`,
     subtitle: dest.neighborhood,
     time: minutesToTime(cursor),
+    remainingBudgetMinutes: budget === null ? null : budget - (cursor - parseTimeToMinutes(startTime)),
   })
 
   return {
@@ -65,6 +80,12 @@ export function buildItinerary({
     endMinutes: cursor,
     endTime: minutesToTime(cursor),
     totalMinutes: cursor - parseTimeToMinutes(startTime),
+    walkingMinutes,
+    visitMinutes,
+    totalDistance,
+    remainingMinutes: budget === null ? null : budget - (cursor - parseTimeToMinutes(startTime)),
+    overBudgetMinutes:
+      budget === null ? 0 : Math.max(0, cursor - parseTimeToMinutes(startTime) - budget),
   }
 }
 

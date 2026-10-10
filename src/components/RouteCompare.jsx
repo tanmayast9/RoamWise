@@ -11,19 +11,20 @@ export default function RouteCompare({
 
   const extraWalk = explore ? Math.max(0, explore.duration - shortest.duration) / 60 : 0
   const extraDist = explore ? Math.max(0, explore.distance - shortest.distance) : 0
+  const estimated = shortest.source === 'estimate' || explore?.source === 'estimate'
 
   return (
     <div className="compare">
       <div className="compare-card">
-        <h3>Shortest vs explore</h3>
+        <h3>{estimated ? 'Route estimates' : 'Shortest vs explore'}</h3>
         <div className="stats">
           <div className="stat">
             <b>{formatKm(shortest.distance)}</b>
-            <span>Shortest walk</span>
+            <span>{estimated ? 'Direct estimate' : 'Quick walk'}</span>
           </div>
           <div className="stat">
             <b>{explore ? formatKm(explore.distance) : '—'}</b>
-            <span>Explore walk</span>
+            <span>{estimated ? 'Explore estimate' : 'Explore route'}</span>
           </div>
           <div className="stat">
             <b>{extraStops} stops</b>
@@ -54,6 +55,11 @@ export default function RouteCompare({
             <i className="swatch short" /> Shortest
           </span>
         </p>
+        {estimated ? (
+          <p className="route-estimate-note" role="status">
+            No routed path is available. These are rough distance/time estimates only; no straight-line route is drawn.
+          </p>
+        ) : null}
       </div>
     </div>
   )
